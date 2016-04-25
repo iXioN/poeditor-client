@@ -1,6 +1,6 @@
 import argparse
 import os
-
+import time
 from ConfigParser import SafeConfigParser
 from poeditor import POEditorAPI, POEditorException
 
@@ -143,15 +143,25 @@ def push(config, languages=None, overwrite=False, sync_terms=False):
                     print("Error: {path} doesn't exist: ignoring language '{language}'"
                           .format(path=import_path, language=language))
                     continue
-
                 print("    Pushing language '{}'...".format(language))
-                client.update_terms_definitions(
-                    project_id,
-                    language_code=language,
-                    file_path=import_path,
-                    overwrite=overwrite,
-                    sync_terms=sync_terms
-                )
+                sleep_time = 5
+                for i in xrange(0, 100):
+                    try:
+                        client.update_terms_definitions(
+                            project_id,
+                            language_code=language,
+                            file_path=import_path,
+                            overwrite=overwrite,
+                            sync_terms=sync_terms
+                        )
+                        print("language {} ok ".format(language))
+                        break
+                    except Exception as e:
+                        if e.error_code == u'4048':
+                            sleep_time = int(sleep_time*2))
+                            print("    error 4048 rety-Pushing {} in {}s language '{}'...".format(i+1, sleep_time language)) #NOQA
+                            time.sleep(sleep_time)
+                            continue
 
 
 def pushTerms(config):
