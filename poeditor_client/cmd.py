@@ -157,7 +157,7 @@ def push(config, languages=None, overwrite=False, sync_terms=False):
                         print("language {} ok ".format(language))
                         break
                     except Exception as e:
-                        if e.error_code == u'4048':
+                        if hasattr(e, 'error_code') and e.error_code == u'4048': #NOQA
                             sleep_time = int(sleep_time*2)
                             print("    error 4048 rety-Pushing {} in {}s language '{}'...".format(i+1, sleep_time, language)) #NOQA
                             time.sleep(sleep_time)
