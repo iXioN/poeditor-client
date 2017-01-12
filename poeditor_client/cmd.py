@@ -144,7 +144,7 @@ def push(config, languages=None, overwrite=False, sync_terms=False):
                           .format(path=import_path, language=language))
                     continue
                 print("    Pushing language '{}'...".format(language))
-                sleep_time = 5
+                sleep_time = 2
                 for i in xrange(0, 100):
                     try:
                         client.update_terms_definitions(
