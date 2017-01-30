@@ -123,7 +123,7 @@ def push(config, languages=None, overwrite=False, sync_terms=False):
     assert config
     client = POEditorAPI(api_token=config.get("main", "apikey"))
     sections = config.sections()
-    sleep_time = 30
+    sleep_time = 32
     for section in sections:
         if not section.startswith("project."):
             continue
@@ -159,7 +159,7 @@ def push(config, languages=None, overwrite=False, sync_terms=False):
                         if hasattr(e, 'error_code') and e.error_code == u'4048': #NOQA
                             print("    error 4048 rety-Pushing {} in {}s language '{}'...".format(i+1, sleep_time, language)) #NOQA
                             time.sleep(sleep_time)
-                            sleep_time = int(sleep_time + 10)
+                            sleep_time = int(sleep_time + 1)
                             continue
 
 
